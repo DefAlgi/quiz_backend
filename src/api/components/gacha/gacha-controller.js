@@ -22,3 +22,19 @@ const create = async (req, res, next) => {
 module.exports = {
   create,
 };
+
+const getHistory = async (req, res, next) => {
+  try {
+    const { userId } = req.query;
+
+    const result = await gachaService.getHistory({ userId });
+
+    return res.status(200).json(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+module.exports = {
+  getHistory,
+};

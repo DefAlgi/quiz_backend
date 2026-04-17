@@ -76,3 +76,13 @@ module.exports = {
   saveGachaLog,
   startSession,
 };
+
+const getUserHistory = async (userId) =>
+  Gacha.find({ userId })
+
+    .sort({ playedAt: -1 })
+    .lean();
+
+module.exports = {
+  getUserHistory,
+};

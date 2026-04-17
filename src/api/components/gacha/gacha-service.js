@@ -104,3 +104,23 @@ const play = async ({ userId }) => {
 module.exports = {
   play,
 };
+
+const getHistory = async ({ userId }) => {
+  if (!userId) {
+    throw errorResponder(errorTypes.BAD_REQUEST, 'userId wajib diisi');
+  }
+
+  const history = await gachaRepository.getUserHistory(userId);
+
+  return {
+    success: true,
+    data: history.map((item) => ({
+      playedAt: item.playedAt,
+      result: item.result,
+    })),
+  };
+};
+
+module.exports = {
+  getHistory,
+};
