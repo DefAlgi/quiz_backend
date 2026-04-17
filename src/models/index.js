@@ -11,13 +11,54 @@ connectionString.pathname += config.database.name;
 
 mongoose.connect(`${connectionString.toString()}`);
 
-const db = mongoose.connection;
-db.once('open', () => {
-  logger.info('Successfully connected to MongoDB');
-});
-
 const dbExports = {};
+
+const db = mongoose.connection;
 dbExports.db = db;
+
+db.once('open', async () => {
+  logger.info('Successfully connected to MongoDB');
+
+  // ================== SEED PRIZE ==================
+  try {
+    const { Prize } = dbExports;
+
+    if (!Prize) {
+      logger.warn('Prize model not found, skip seeding');
+      return;
+    }
+
+    const INITIAL_PRIZES = [
+      { code: 'emas-10g', name: 'Emas 10 gram', quota: 1 },
+      { code: 'smartphone-x', name: 'Smartphone X', quota: 5 },
+      { code: 'smartwatch-y', name: 'Smartwatch Y', quota: 10 },
+      { code: 'voucher-100k', name: 'Voucher Rp100.000', quota: 100 },
+      { code: 'pulsa-50k', name: 'Pulsa Rp50.000', quota: 500 },
+    ];
+
+    await Promise.all(
+      INITIAL_PRIZES.map((prize) =>
+        Prize.updateOne(
+          { code: prize.code },
+          {
+            $setOnInsert: {
+              code: prize.code,
+              name: prize.name,
+              quota: prize.quota,
+              remainingQuota: prize.quota,
+              winnerCount: 0,
+            },
+          },
+          { upsert: true }
+        )
+      )
+    );
+
+    logger.info('Prize seeding completed');
+  } catch (err) {
+    logger.error(err, 'Prize seeding failed');
+  }
+});
 
 const basename = path.basename(__filename);
 
