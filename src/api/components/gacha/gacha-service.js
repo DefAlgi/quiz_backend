@@ -58,14 +58,14 @@ const play = async ({ userId }) => {
         const selectedPrize = pickRandomItem(availablePrizes);
         // PERBAIKAN: Gunakan ._id alih-alih .id karena kita menggunakan .lean() di repository
         const claimedPrize = await prizeService.claimPrize(
-          selectedPrize._id, 
+          selectedPrize.id,
           session
         );
 
         if (claimedPrize) {
           result = {
             // PERBAIKAN: Gunakan ._id
-            prizeId: claimedPrize._id, 
+            prizeId: claimedPrize.id,
             prizeName: claimedPrize.name,
           };
         }
