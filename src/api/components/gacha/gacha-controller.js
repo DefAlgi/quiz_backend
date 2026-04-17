@@ -19,10 +19,6 @@ const create = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  create,
-};
-
 const getHistory = async (req, res, next) => {
   try {
     const { userId } = req.query;
@@ -36,5 +32,6 @@ const getHistory = async (req, res, next) => {
 };
 
 module.exports = {
+  create,
   getHistory,
 };

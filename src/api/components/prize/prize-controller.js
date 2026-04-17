@@ -20,6 +20,20 @@ const list = async (req, res, next) => {
   }
 };
 
+const getWinnersList = async (req, res, next) => {
+  try {
+    const winners = await prizeService.getMaskedWinners();
+
+    return res.status(200).json({
+      success: true,
+      data: winners,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 module.exports = {
   list,
+  getWinnersList,
 };

@@ -1,31 +1,11 @@
-const { Prize } = require('../../../models');
+const { Prize, Gacha } = require('../../../models');
 
 const INITIAL_PRIZES = [
-  {
-    code: 'emas-10g',
-    name: 'Emas 10 gram',
-    quota: 1,
-  },
-  {
-    code: 'smartphone-x',
-    name: 'Smartphone X',
-    quota: 5,
-  },
-  {
-    code: 'smartwatch-y',
-    name: 'Smartwatch Y',
-    quota: 10,
-  },
-  {
-    code: 'voucher-100k',
-    name: 'Voucher Rp100.000',
-    quota: 100,
-  },
-  {
-    code: 'pulsa-50k',
-    name: 'Pulsa Rp50.000',
-    quota: 500,
-  },
+  { code: 'emas-10g', name: 'Emas 10 gram', quota: 1 },
+  { code: 'smartphone-x', name: 'Smartphone X', quota: 5 },
+  { code: 'smartwatch-y', name: 'Smartwatch Y', quota: 10 },
+  { code: 'voucher-100k', name: 'Voucher Rp100.000', quota: 100 },
+  { code: 'pulsa-50k', name: 'Pulsa Rp50.000', quota: 500 },
 ];
 
 const seedInitialPrizes = async (session) => {
@@ -78,10 +58,16 @@ const claimPrize = async (prizeId, session) =>
 const getPrizeSummary = async () =>
   Prize.find({}).sort({ createdAt: 1 }).lean();
 
+const getAllWinningGachas = async () =>
+  Gacha.find({ result: { $ne: null } })
+    .sort({ playedAt: 1 })
+    .lean();
+
 module.exports = {
   INITIAL_PRIZES,
   seedInitialPrizes,
   getAvailablePrizes,
   claimPrize,
   getPrizeSummary,
+  getAllWinningGachas,
 };

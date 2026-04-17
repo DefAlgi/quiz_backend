@@ -56,7 +56,6 @@ const play = async ({ userId }) => {
 
       if (shouldWin) {
         const selectedPrize = pickRandomItem(availablePrizes);
-        // PERBAIKAN: Gunakan ._id alih-alih .id karena kita menggunakan .lean() di repository
         const claimedPrize = await prizeService.claimPrize(
           selectedPrize.id,
           session
@@ -64,7 +63,6 @@ const play = async ({ userId }) => {
 
         if (claimedPrize) {
           result = {
-            // PERBAIKAN: Gunakan ._id
             prizeId: claimedPrize.id,
             prizeName: claimedPrize.name,
           };
@@ -101,10 +99,6 @@ const play = async ({ userId }) => {
   }
 };
 
-module.exports = {
-  play,
-};
-
 const getHistory = async ({ userId }) => {
   if (!userId) {
     throw errorResponder(errorTypes.BAD_REQUEST, 'userId wajib diisi');
@@ -122,5 +116,6 @@ const getHistory = async ({ userId }) => {
 };
 
 module.exports = {
+  play,
   getHistory,
 };

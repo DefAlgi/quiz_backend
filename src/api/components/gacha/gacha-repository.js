@@ -69,14 +69,6 @@ const saveGachaLog = async (payload, session) => {
 
 const startSession = async () => db.startSession();
 
-module.exports = {
-  MAX_DAILY_GACHA,
-  reserveDailyQuota,
-  rollbackDailyQuota,
-  saveGachaLog,
-  startSession,
-};
-
 const getUserHistory = async (userId) =>
   Gacha.find({ userId })
 
@@ -84,5 +76,10 @@ const getUserHistory = async (userId) =>
     .lean();
 
 module.exports = {
+  MAX_DAILY_GACHA,
+  reserveDailyQuota,
+  rollbackDailyQuota,
+  saveGachaLog,
+  startSession,
   getUserHistory,
 };
